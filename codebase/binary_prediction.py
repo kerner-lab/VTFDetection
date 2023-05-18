@@ -14,8 +14,8 @@ def load_data(file_path):
 def preprocess_data(df):
     # Preprocess the data by dropping missing values and converting columns to appropriate data types
     df = df.dropna()
-    df['Binary'] = df['Binary'].astype(int)
-    df['Binary'] = df['Binary'].replace(2, 1)
+    df['Ground_Truth'] = df['Ground_Truth'].astype(int)
+    df['Ground_Truth'] = df['Ground_Truth'].replace(2, 1)
     return df
 
 
@@ -102,21 +102,21 @@ def main():
     unsampled_df = evaluate_unsampled_data(df, sampled_df)
 
     # Calculate ROC AUC score
-    roc_auc = calculate_roc_auc(sampled_df['Binary'], sampled_df['Prediction'])
-    print("ROC AUC Score:", roc_auc_score(sampled_df['Binary'], sampled_df['Prediction']))
+    roc_auc = calculate_roc_auc(sampled_df['Ground_Truth'], sampled_df['Prediction'])
+    print("ROC AUC Score:", roc_auc_score(sampled_df['Ground_Truth'], sampled_df['Prediction']))
 
-    fpr, tpr, thresholds = roc_curve(sampled_df['Binary'], sampled_df['Prediction'])
+    fpr, tpr, thresholds = roc_curve(sampled_df['Ground_Truth'], sampled_df['Prediction'])
     # Calculate F1 scores
-    f1_score, f1_threshold = calculate_f1_scores(unsampled_df['Binary'], unsampled_df['Prediction'],thresholds)
+    f1_score, f1_threshold = calculate_f1_scores(unsampled_df['Ground_Truth'], unsampled_df['Prediction'],thresholds)
     print("Best F1 Score:", f1_score)
     print("Best F1 Threshold:", f1_threshold)
 
     # Calculate G-Mean
-    gmeans_threshold = calculate_gmeans_threshold(sampled_df['Binary'], sampled_df['Prediction'], thresholds, tpr, fpr)
+    gmeans_threshold = calculate_gmeans_threshold(sampled_df['Ground_Truth'], sampled_df['Prediction'], thresholds, tpr, fpr)
     print("Best G-Mean Threshold:", gmeans_threshold)
 
     # Calculate metrics
-    accuracy, confusion_matrix, threshold = calculate_metrics(unsampled_df['Binary'], unsampled_df['Prediction'], f1_threshold, gmeans_threshold)
+    accuracy, confusion_matrix, threshold = calculate_metrics(unsampled_df['Ground_Truth'], unsampled_df['Prediction'], f1_threshold, gmeans_threshold)
     print("Accuracy: ", accuracy)
     print("Confusion Matrix:\n", confusion_matrix)
 
