@@ -7,7 +7,7 @@ Datasets
 
 Procedure
 
-1. Run the modified LRX code (**fork repo**) on the whole volcano dataset
+1. Run the modified LRX code on the whole volcano dataset
 		-https://github.com/adityamohan29/dora/tree/issue-lrx-mod
 
 2. Once the results are obtained, run the classify_truth_label.py to separate the results into yes and no instance folders
