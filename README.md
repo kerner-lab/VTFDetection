@@ -14,6 +14,6 @@ Procedure
 
 3. Run the decision_score.py to obtain the csv with their calculated scores
 
-4. Run the binary_prediction.py with the csv obtained in step 3 as input to obtain the threshold and predict the binary value acc to the decision score
+4. Run the binary_prediction.py with the csv obtained in step 3 as input to obtain the threshold and predict the binary value according to the decision score
 
 
