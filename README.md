@@ -2,7 +2,7 @@
 
 Datasets
 
-1. Volcano_Data_Collected - contains 52 volcanoes and 7941 total TIF files
+1. Volcano_Data_Collected - contains 52 volcanoes and 7941 total TIF files (Box folder)
 2. Merged_tables_processed.xlsx - latest pruned and processed excel files containing these volcanoes and correct volcano names
 
 Procedure
