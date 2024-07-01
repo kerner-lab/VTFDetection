@@ -10,9 +10,11 @@ Procedure
 1. Install DORA on your local machine following the steps from the issue-lrx-mod branch in this forked repo
 		-https://github.com/adityamohan29/dora/tree/issue-lrx-mod/dora_exp_pipeline
 
-2. Once the results are obtained, run `pip install -r requirements.txt` to install all requirements for this app
+2. Navigate to directory inference_pipeline with `cd inference_pipeline/`
 
-3. Run `vtf_app.py` with your specified input directory and output file. For example: 
+3. Once the results are obtained, run `pip install -r requirements.txt` to install all requirements for this app
+
+4. Run `vtf_app.py` with your specified input directory and output file. For example: 
 `python3 vtf_app.py --input="/volcano_data/Pacaya/" --output="Pacaya_res.csv"`
 You can run `python3 vtf_app.py --help` if you want to specify any additional arguments
 
