@@ -7,13 +7,18 @@ Datasets
 
 Procedure
 
-1. Run the modified LRX code on the whole volcano dataset, from the issue-lrx-mod branch in this forked repo
-		-https://github.com/adityamohan29/dora/tree/issue-lrx-mod
+1. Install DORA on your local machine following the steps from the issue-lrx-mod branch in this forked repo
+		-https://github.com/adityamohan29/dora/tree/issue-lrx-mod/dora_exp_pipeline
 
-2. Once the results are obtained, run the classify_truth_label.py to separate the results into yes and no instance folders
+2. Once the results are obtained, run `pip install -r requirements.txt` to install all requirements for this app
 
-3. Run the decision_score.py to obtain the csv with their calculated scores
+3. Run the vtf_app.py with your specified input directory and output file. For example: 
+`python3 vtf_app.py --input="/volcano_data/Pacaya/" --output="Pacaya_res.csv"`
+You can run `python3 vtf_app.py --help` if you want to specify any additional arguments
 
-4. Run the binary_prediction.py with the csv obtained in step 3 as input to obtain the threshold and predict the binary value according to the decision score
+Note:
+Your directory structure should be of the following format - {Volcano}/"all"/{ASTER file name}, for example:
+Pacaya/all/AST_08_00302282019042806_20230914075707_28909.SurfaceKineticTemperature.KineticTemperature.tif
+
 
 
