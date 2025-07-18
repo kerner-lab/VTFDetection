@@ -49,8 +49,13 @@ class CNNClassifier(nn.Module):
 output_channels = 16
 model = CNNClassifier(output_channels)
 model = model.to(torch.double)
-state_dict = torch.load('model/model_618.pth', map_location=torch.device('cpu'))
+state_dict = torch.load('model/model_618_2.pth', map_location=torch.device('cpu'))
 new_state_dict = {k[7:] if k.startswith('module.') else k: v for k, v in state_dict.items()}
+try:
+    model.load_state_dict(new_state_dict)
+    print("Model weights loaded successfully!")
+except RuntimeError as e:
+    print("Error loading model:", e)
 model.load_state_dict(new_state_dict)
 model.eval()
 
@@ -61,14 +66,14 @@ def preprocess_image(image):
 
 def run_dora(volcano):
     file_list = sorted(os.listdir(f'configs_lrx_inference/{volcano}'))
-    
-    with ThreadPoolExecutor(max_workers=3) as executor:
+
+    with ThreadPoolExecutor(max_workers= max(3, os.cpu_count() - 1)) as executor:
         futures = []
-        for file in file_list[2:]:
+        for file in file_list: # file_list[2:]:
             print(f"Running LRX for {file}")
             file_path = os.path.join(f'configs_lrx_inference/{volcano}', file)
             futures.append(executor.submit(subprocess.run, ['dora_exp', file_path]))
-            break
+            # break
         for future in futures:
             future.result()
 
@@ -140,14 +145,15 @@ def predict(raw_folder_path, output_path, gvp_volcano_name, cropped_lrx_dir=None
     df['Maximum (K)'] = ""
     df['Mean (Background Temperature) (K)'] = ""
     df['Standard Deviation'] = ""
-    df['Max Temp Above Backround (K)'] = ""
+    df['Max Temp Above Background (K)'] = ""
+    df['Filename'] = ""
     i = 0
     for lrx_image_path in os.listdir(lrx_folder_path):
         print(F"Inferring: {lrx_image_path}")
         try:
             lrx_filename = lrx_folder_path+lrx_image_path + "/lrx-bands=1-inner_window=3-outer_window=5/scores_raster_lrx.tif"
             file = tifffile.imread(lrx_filename)
-            
+
             image = preprocess_image(file)
             
             image = torch.from_numpy(image)
@@ -159,7 +165,8 @@ def predict(raw_folder_path, output_path, gvp_volcano_name, cropped_lrx_dir=None
             probs = torch.sigmoid(output)
             predicted = (probs > 0.5).int()
             row = infer_thermal_stats(lrx_filename, raw_folder_path+"all/"+lrx_image_path, predicted.item(), volcano)
-            df = df.append(row, ignore_index=True)
+            new_row_df = pd.DataFrame([row]) # bug thermal stats not saved
+            df = pd.concat([df, new_row_df], ignore_index=True) # df = df.append(row, ignore_index=True)
 
         except Exception as e:
             pass
