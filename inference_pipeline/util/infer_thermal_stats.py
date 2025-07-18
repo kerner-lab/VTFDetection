@@ -12,9 +12,10 @@ from rasterio.windows import Window
 from dateutil import parser
 from rasterio.transform import rowcol
 
-def formatDate_classify(fname,vol):
-    base_path = '/scratch/amohan62/915volcano_data/'
-    date_str = fname.split(base_path + vol+"/all/AST_08_003",1)[1][0:2] + '-' + fname.split(base_path+ vol+"/all/AST_08_003",1)[1][2:4] + '-' + fname.split(base_path +vol+"/all/AST_08_003",1)[1][4:8]
+def formatDate_classify(fname):
+    file_type = "/all" # cloud-free or all
+    base_path =  fname.split(file_type)[0] #'/scratch/amohan62/915volcano_data/'
+    date_str = fname.split(base_path + file_type+"/AST_08_003",1)[1][0:2] + '-' + fname.split(base_path+file_type+"/AST_08_003",1)[1][2:4] + '-' + fname.split(base_path +file_type+"/AST_08_003",1)[1][4:8]
     DT = parser.parse(date_str)
     return DT
 
@@ -22,8 +23,8 @@ def infer_thermal_stats(lrx_filename,original_path,predicted,volcano):
     # Open the raster file
     image_a = lrx_filename
     image_b = original_path
-    date = formatDate_classify(original_path,volcano)
-    new_row = {'Date': date, 'Volcano': volcano,'Volcanic Thermal Anomaly (Y/N)': 'N', 'Maximum (K)': '', 'Mean (Background Temperature) (K)': '','Standard Deviation': '', 'Max Temp Above Backround (K)' : ''}
+    date = formatDate_classify(original_path)
+    new_row = {'Date': date, 'Volcano': volcano,'Volcanic Thermal Anomaly (Y/N)': 'N', 'Maximum (K)': '', 'Mean (Background Temperature) (K)': '','Standard Deviation': '', 'Max Temp Above Background (K)' : '', 'Filename' : original_path}
     if(predicted == 1):
         try:
             with rasterio.open(image_b) as src:
@@ -74,7 +75,8 @@ def infer_thermal_stats(lrx_filename,original_path,predicted,volcano):
 
                     value_at_mapped_coord = np.max(patch)
                     bg_arr = patch[patch != np.max(patch)]
-                    new_row = {'Date': date, 'Volcano': volcano,'Volcanic Thermal Anomaly (Y/N)': 'Y', 'Maximum (K)': value_at_mapped_coord, 'Mean (Background Temperature) (K)': np.mean(bg_arr),'Standard Deviation':np.std(patch), 'Max Temp Above Backround (K)' : np.max(patch) - np.min(patch)}
+                    # new_row = {'Date': date, 'Volcano': volcano,'Volcanic Thermal Anomaly (Y/N)': 'Y', 'Maximum (K)': value_at_mapped_coord, 'Mean (Background Temperature) (K)': np.mean(bg_arr),'Standard Deviation':np.std(patch), 'Max Temp Above Backround (K)' : np.max(patch) - np.min(patch)}
+                    new_row = {'Date': date, 'Volcano': volcano,'Volcanic Thermal Anomaly (Y/N)': 'Y', 'Maximum (K)': value_at_mapped_coord, 'Mean (Background Temperature) (K)': np.mean(bg_arr),'Standard Deviation':np.std(patch), 'Max Temp Above Background (K)' : np.max(patch) - np.mean(bg_arr), 'Filename': original_path}
                     return new_row
         except Exception as e:
             print(f"exception : {e}")
