@@ -23,5 +23,5 @@ Your directory structure should be of the following format - {Volcano}/"all"/{AS
 Pacaya/all/AST_08_00302282019042806_20230914075707_28909.SurfaceKineticTemperature.KineticTemperature.tif
 
 5. Run `run_all.py` with your specified input directory of a **volcanic region**. For example: 
-`python3 run_all.py --region="Kuril_Islands"
+`python3 run_all.py --region="Kuril_Islands"`
 You can run `python3 run_all.py --help` if you want help specifying arguments
