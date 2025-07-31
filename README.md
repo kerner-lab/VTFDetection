@@ -7,8 +7,8 @@ Datasets
 
 Procedure
 
-1. Install DORA on your local machine following the steps from the issue-lrx-mod branch in this forked repo
-		-[https://github.com/nasaharvest/dora/tree/vtf-dora](https://github.com/nasaharvest/dora/tree/vtf-dora)
+1. Install DORA on your local machine following the steps from the vtf-dora branch in this forked repo
+		-[https://github.com/nasaharvest/dora/tree/vtf-dora/dora_exp_pipeline](https://github.com/nasaharvest/dora/tree/vtf-dora/dora_exp_pipeline)
 
 2. Navigate to directory inference_pipeline with `cd inference_pipeline/`
 
